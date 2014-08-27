@@ -1,0 +1,18 @@
+title: "Anthony Sandrin"
+name: "Anthony Sandrin"
+description: "First Year Computer Science Student at the University of Waterloo"
+copyright: "&copy 2014 Anthony Sandrin All Rights Reserved"
+
+github: "https://github.com/anthonysandrin"
+twitter: "https://twitter.com/AnthonySandrin"
+linkedin: "https://ca.linkedin.com/in/anthonysandrin/"
+email: "sandrinanthony@gmail.com"
+
+url: "anthonysandrin.github.io"
+
+paginate: 10
+paginate_path: "blog/page:num"
+
+markdown: rdiscount
+permalink: /blog/:title
+highlighter: pygments
