@@ -1,0 +1,482 @@
+<html>
+<head>
+    <title>Anthony Sandrin</title>
+    <meta name='description' content='Project'>
+    <link rel='stylesheet' href='css/cs488.css'>
+    <link rel='stylesheet' href='css/drift-basic.css'>
+    <link href='http://fonts.googleapis.com/css?family=Lato|Noto+Serif' rel='stylesheet' type='text/css'>
+    <script src="js/Drift.min.js"></script>
+    <script async="" src="//www.google-analytics.com/analytics.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-58577506-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Atlas</h1>
+      <h2>My final project for CS488</h2>
+      <p>
+      </p>
+    </header>
+
+    <section class="gallery">
+      <div class="gallery-image">
+        <img class="zooming-image" src="img/statue.png"></img>
+        <p>
+        Final Scene.
+        <p>
+      </div>
+    </section>
+
+    <section class="feature">
+      <div class="feature-body">
+        <div class="feature-header">
+          <h2>Path Tracing</h2>
+        </div>
+        <div class="hrule"></div>
+        <div class="feature-details">
+          <p>
+          I implemented bidirectional path tracing.
+          </p>
+          <p>
+          For each sample two paths
+          are generated: a camera path and a light path. The camera path starts
+          with a camera ray, while the light path starts with a randomly selected light
+          source and direction. The paths are built by repeatedly intersecting rays with
+          the scene, recording the intersection point, and creating a new ray based
+          on the material of the intersected primitive.
+          </p>
+          <p>
+          After both paths are generated, each camera vertex is connected to each light
+          vertex to create many camera-light paths. The throughput of each path is 
+          then calculated by casting a shadow ray to test for occlusion and calculating the
+          BRDF at each intersection point, which is determined by the object's material.
+          The sum of the throughput of all paths is then recorded as the value of the sample.
+          </p>
+          <p>
+          In the following image, notice the 
+          colour of the red floor bleeding onto the spheres as light bounces off the
+          floor then the sphere then into the camera.
+          </p>
+        </div>
+      </div>
+      <div class="feature-image">
+        <img class="zooming-image" src="img/three_spheres_point.png"></img>
+      </div>
+    </section>
+
+    <section class="feature">
+      <div class="feature-body">
+        <div class="feature-header">
+          <h2>Soft Shadows</h2>
+        </div>
+        <div class="hrule"></div>
+        <div class="feature-details">
+          <p>
+          Soft shadows are a direct consequence of bidirectional path tracing
+          and spherical light sources. 
+          </p>
+          <p>
+          Spherical light sources are implemented by choosing a random point on the
+          surface of the sphere and a random direction as the start of the light path.
+          </p>
+          <p>
+          This works well for scenes with only diffuse objects where the light itself
+          is not visible; however, extra work is done in order for camera rays to be able
+          to intersect with the light directly, or for purely specular camera-light paths to be
+          possible. To handle these cases, each spherical light source creates a sphere
+          primitive with a special emissive material. When a camera path intersects with
+          these emissive spheres, this amount of light emitted is added to the output.
+          </p>
+          <p>
+          In the following image, notice how the shadow at the point of the cube starts sharp
+          but softens out as it gets farther away.
+          </p>
+        </div>
+      </div>
+      <div class="feature-image">
+        <img class="zooming-image" src="img/soft_shadow.png"></img>
+      </div>
+    </section>
+
+    <section class="gallery">
+      <div class="gallery-image">
+        <img class="zooming-image" src="img/three_spheres_sky_box.png"></img>
+        <p>No direct light, uniform sky lighting only</p>
+      </div>
+      <div class="gallery-image">
+        <img class="zooming-image" src="img/three_spheres_point.png"></img>
+        <p>Point light and uniform sky lighting</p>
+      </div>
+      <div class="gallery-image">
+        <img class="zooming-image" src="img/three_spheres.png"></img>
+        <p>Spherical light and uniform sky lighting</p>
+      </div>
+    </section>
+
+    <section class="feature">
+      <div class="feature-body">
+        <div class="feature-header">
+          <h2>Refraction & Fresnel Effect</h2>
+        </div>
+        <div class="hrule"></div>
+        <div class="feature-details">
+          <p>
+          I implemented a glass-like material that has both reflection and refraction components
+          combined together using the Fresnel equations.
+          </p>
+          <p>
+          In the following image, notice the reflections around the edges of the spheres and the caustic
+          effects of the spheres on the floor.
+          </p>
+        </div>
+      </div>
+      <div class="feature-image">
+        <img class="zooming-image" src="img/glass.png"></img>
+        <p>Glass spheres</p>
+      </div>
+      <div class="feature-image">
+        <img class="zooming-image" src="img/caustics_bunny_bdpt.png" style="width:1024px; height:auto"></img>
+        <p>Stanford Bunny Caustics</p>
+      </div>
+    </section>
+
+    <section class="feature">
+      <div class="feature-body">
+        <div class="feature-header">
+          <h2>Texture Mapping</h2>
+        </div>
+        <div class="hrule"></div>
+        <div class="feature-details">
+          <p>
+          I implemented texture mapping by storing the uv coordinates of each intersection 
+          point and sampling textures once using linear interpolation. 
+          </p>
+          <p>
+          In the next image, notice the texture applied to the T. rex and the procedural
+          checkerboard texture applied to the floor.
+          </p>
+        </div>
+      </div>
+      <div class="feature-image">
+        <img class="zooming-image" src="img/trex3.png"></img>
+      </div>
+    </section>
+
+    <section class="feature">
+      <div class="feature-body">
+        <div class="feature-header">
+          <h2>Bump Mapping</h2>
+        </div>
+        <div class="hrule"></div>
+        <div class="feature-details">
+          <p>
+          Bump mapping is implemented by storing the normal and uv tangent vectors
+          at each intersection point and perturbing the normal according to a texture
+          sample.
+          </p>
+          <p>
+          In the following animation, notice how the shading on the surface of the sphere changes
+          as the light moves.
+          </p>
+        </div>
+      </div>
+      <div class="feature-image">
+        <img class="zooming-image" src="img/bump.gif" style="width:1024px; height:auto"></img>
+      </div>
+    </section>
+
+    <section class="feature">
+      <div class="feature-body">
+        <div class="feature-header">
+          <h2>Perlin Noise</h2>
+        </div>
+        <div class="hrule"></div>
+        <div class="feature-details">
+          <p>I implemented 3D and 4D Perlin noise using Perlin's improved interpolation technique.</p>
+          <p>
+          The next animation is created by measuring the derivative of the perlin noise at the surface of
+          the sphere with respect to the u and v tangent vectors. These values are used to perturb
+          the surface normal. I then create an animatuion using time as the fourth dimension of
+          the perlin noise input.
+          </p>
+        </div>
+      </div>
+      <div class="feature-image">
+        <img class="zooming-image" src="img/perlin.gif" style="width:1024px; height:auto"></img>
+      </div>
+    </section>
+
+    <section class="feature">
+      <div class="feature-body">
+        <div class="feature-header">
+          <h2>Depth of Field</h2>
+        </div>
+        <div class="hrule"></div>
+        <div class="feature-details">
+          <p>
+          I implemented depth of field using the thin lens camera model.
+          Each sample starts at a random point on the camera's aperture and is given a direction such that
+          all rays for a specific pixel intersect at the same point on the focal plane.
+          </p>
+          <p>
+          In the next image, notice that the red sphere is in focus and sharp while the remaining spheres are out of focus and blurry.
+          </p>
+        </div>
+      </div>
+      <div class="feature-image">
+        <img class="zooming-image" src="img/dof.png"></img>
+      </div>
+    </section>
+
+    <section class="feature">
+      <div class="feature-body" style="flex: 2">
+        <div class="feature-header">
+          <h2>Antialiasing</h2>
+        </div>
+        <div class="hrule"></div>
+        <div class="feature-details">
+          <p>
+          Multisample antialiasing is implemented by sampling rays not at the center of each pixel
+          but at a uniformly random point within each pixel.
+          </p>
+          <p>
+          The first image is created by taking samples at the exact center of each pixel while the second
+          is created by taking samples randomly distributed within each pixel. In the first image, notice the
+          jagged edges on the shadows and along the checkerboard lines. Those same lines are smooth in the
+          second image.
+          </p>
+        </div>
+      </div>
+      <div class="feature-image">
+        <img class="zooming-image" src="img/antialias_bad.png"></img>
+        <p>Not antialiased</p>
+      </div>
+      <div class="feature-image">
+        <img class="zooming-image" src="img/antialias.png"></img>
+        <p>Antialiased</p>
+      </div>
+    </section>
+
+    <section class="feature">
+      <div class="feature-body">
+        <div class="feature-header">
+          <h2>Acceleration</h2>
+        </div>
+        <div class="hrule"></div>
+        <div class="feature-details">
+          <p>
+          For acceleration, I use an axis-aligned bounding box for each primitive and a kd-tree for
+          storing the faces of each mesh.
+          </p>
+          <p>
+          The followingscene including the stanford dragon model contains ~100,000 faces and without
+          a kd-tree it would take ~68 minutes to render a 512x512 image with 4 samples per pixel.
+          With a kd-tree it takes only 40.65 seconds to render the images. Using 8-core
+          multithreading brings the render time down to only 8.43 seconds.
+          </p>
+        </div>
+      </div>
+      <div class="feature-image">
+        <img class="zooming-image" src="img/dragon.png"></img>
+      </div>
+    </section>
+
+    <section class="feature">
+      <div class="feature-body">
+        <div class="feature-header">
+          <h2>Glossy Reflections</h2>
+        </div>
+        <div class="hrule"></div>
+        <div class="feature-details">
+          <p>
+          I added glossy reflections to my material model by first adding a reflectiveness
+          parameter which interpolates between a lambertian surface model and a perfect reflection
+          model. I then added a glossiness parameter that controls a random perturbation of the
+          reflected ray and modified the surface BRDF to account for this perturbation.
+          </p>
+        </div>
+      </div>
+      <div class="feature-image">
+        <img class="zooming-image" src="img/glossy2.png"></img>
+        <p>
+        Three spheres with varying glossiness.
+        </p>
+      </div>
+      <div class="feature-image">
+        <img class="zooming-image" src="img/glossy.png"></img>
+        <p>
+        Textured materials with glossy reflections
+        </p>
+      </div>
+    </section>
+
+    <section class="feature">
+      <div class="feature-body">
+        <div class="feature-header">
+          <h2>Metropolis Light Transport</h2>
+        </div>
+        <div class="hrule"></div>
+        <div class="feature-details">
+          <p>
+          I implemented pure sample space Metropolis light transport.
+          </p>
+          <p>
+          Each path is identified with the vector of random numbers
+          used to generate it. By applying random mutations to this
+          vector of numbers, a markov chain of paths can be created.
+          This markov chain is then used as part of the Metropolis sampling
+          algorithm to sample paths with probability density approximately
+          equal to the luminance of the path.
+          </p>
+          <p>
+          I implemented two mutation types:
+          a large step that completely randomizes the random vector and
+          a small step that applies a small normally distributed perturbation
+          to the vector.
+          </p>
+          <p>
+          This implementation still needs some tweaking to be usable and
+          in general produces noisier results than standard bidirectoinal path tracing.
+          To improve the results I would need to reduce startup bias by adopting
+          a better approach for generating bootstrap samples. I would
+          also need to develop a more robust mutatoin strategy.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery">
+      <div class="gallery-image">
+        <img class="zooming-image" src="img/caustics_bdpt.png"></img>
+        <p>Standard BDPT, 32 Samples</p>
+      </div>
+      <div class="gallery-image">
+        <img class="zooming-image" src="img/caustics_mlt.png"></img>
+        <p>Metropolis Light Transport, 32 Samples</p>
+      </div>
+      <div class="gallery-image">
+        <img class="zooming-image" src="img/caustics_weight.png"></img>
+        <p>Metropolis Light Transport samples per pixel</p>
+      </div>
+    </section>
+
+
+    <section class="feature">
+      <div class="feature-body">
+        <div class="feature-header">
+          <h2>Volumetric Scattering</h2>
+        </div>
+        <div class="hrule"></div>
+        <div class="feature-details">
+          <p>
+          I implemented volumetric scattering by assigning each object in the
+          scene an internal medium and also designating a global scene medium.
+          </p>
+          As paths are being constructed, I keep track of the current medium that the
+          path is travelling through. Before adding a vertex to the path, I first
+          consider the possibility that the light will scatter before reaching the
+          intersection point. In this case a special scattering
+          vertex is added to the path instead of the usual intersection vertex.
+          </p>
+          <p>
+          When calculating the throughput of each path,
+          the value is decreased by a transmission factor
+          calculated for each segment of the path.
+          Also, at scatter vertices, where I would normally multiply by
+          the surface's BRDF, I instead multiply by the medium's phase function.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery">
+      <div class="gallery-image">
+        <img class="zooming-image" src="img/medium.png"></img>
+        <p>
+        Homogeneous global medium.
+        <p>
+      </div>
+      <div class="gallery-image">
+        <img class="zooming-image" src="img/perlin_medium.png"></img>
+        <p>
+        Medium contained within a sphere using ray marching over perlin noise.
+        <p>
+      </div>
+      <div class="gallery-image">
+        <img class="zooming-image" src="img/earth.png"></img>
+        <p>
+        Clouds rendered using ray marching on NASA's blue marble imagery.
+        <p>
+      </div>
+    </section>
+
+    <section class="feature">
+      <div class="feature-body">
+        <div class="feature-header">
+          <h2>Final Scene</h2>
+        </div>
+        <div class="hrule"></div>
+        <div class="feature-details">
+        </div>
+      </div>
+      <div class="feature-image">
+        <img class="zooming-image" src="img/concept.png"></img>
+        <p>Final scene concept sketch</p>
+      </div>
+    </section>
+    <section class="gallery">
+      <div class="gallery-image">
+        <img class="zooming-image" src="img/statue.png"></img>
+        <p>Final Scene.</p>
+      </div>
+    </section>
+
+    <section class="feature">
+      <div class="feature-body">
+        <div class="feature-header">
+          <h2>Credits</h2>
+        </div>
+        <div class="hrule"></div>
+        <div class="feature-details">
+          <p>
+          Credit to Greg Zaal and <a href="https://hdrihaven.com">hdrihaven.com</a> for the hdri skyboxes used in some of the renders above.
+          </p>
+          <p>
+          Credit to joel3d at <a href="https://www.turbosquid.com/FullPreview/Index.cfm/ID/933905">turbosquid.com</a> for the T. rex model used
+          in the texture mapping render.
+          </p>
+          <p>
+          Credit to CG_Luke at <a href="https://www.turbosquid.com/FullPreview/Index.cfm/ID/1049650">turbosquid.com</a> for the human base model used
+          in the final scene.
+          </p>
+          <p>
+          Credit to <a href="https://3dtextures.me">3dtextures.me</a> for the remaining textures used.
+          </p>
+          <p>
+          Credit to <a href="https://www.graphics.cornell.edu/~bjw/rgbe.html">Greg Ward</a> for his implementation of the RGBE file format.
+          </p>
+          <p>
+          I used the <a href="https://github.com/ThePhD/sol2">sol</a> library
+          for extending the lua interface.
+          </p>
+          <p>
+          I referenced the book <a href="https://www.pbrt.org">Physically Based Rendering</a> for much of the theory involved.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+    </footer>
+  </main>
+  <script src="js/cs488.js"></script>
+</body>
+</html>
+

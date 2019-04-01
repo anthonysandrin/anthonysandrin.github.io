@@ -1,0 +1,120 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-family: Nato;
+  font-size: 18pt;
+  background: #EEEEEE;
+}
+
+header {
+  margin: 1em;
+  padding: 1em;
+}
+
+header h1 {
+  font-family: Lato;
+  font-size: 4em;
+  text-align: center;
+}
+
+header h2 {
+  font-family: Lato;
+  font-size: 2em;
+  font-weight: 300;
+  text-align: center;
+}
+
+header p {
+  padding: 2em;
+}
+
+.hrule {
+  width: 60%;
+  background: #888888;
+  height:2px;
+  margin-left: 20%;
+}
+
+.feature {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1em;
+  margin: 1em;
+}
+
+.feature-body {
+  flex: 2;
+  margin: 1em;
+  display: flex;
+  flex-direction: column;
+}
+
+.feature-header {
+  font-family: Lato;
+  text-align: center;
+  font-size: 1.5em;
+}
+
+.feature-header h2 {
+  font-weight: 300;
+}
+
+.feature-details {
+  align-self: center;
+  min-width: 20em;
+  max-width: 40em;
+  padding: 1em 4em;
+  flex: 1;
+}
+
+.feature-image {
+  text-align: center;
+  align-self: center;
+  flex: 1;
+  padding: 1em;
+  border-radius: 10px;
+  padding-top: 10em;
+}
+
+.feature-image img {
+  max-height: 100%;
+  max-width: 100%;
+  min-width: 256px;
+  border-radius: 10px;
+  box-shadow: 3px 3px 10px 5px #00000088;
+}
+
+.feature-image p {
+  font-family: Lato;
+  margin: 1em;
+  padding: 1em;
+}
+
+.gallery {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 1em;
+  margin: 1em;
+}
+
+.gallery-image {
+  text-align: center;
+  flex: 1;
+  padding: 1em;
+  border-radius: 10px;
+}
+
+.gallery-image img {
+  max-height: 100%;
+  max-width: 100%;
+  min-width: 256px;
+  border-radius: 10px;
+  box-shadow: 3px 3px 10px 5px #00000088;
+}
+
+.gallery-image p {
+  font-family: Lato;
+  margin: 1em;
+  padding: 1em;
+}
