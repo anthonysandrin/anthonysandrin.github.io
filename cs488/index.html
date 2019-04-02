@@ -291,9 +291,11 @@
           write to a thread-local buffers, accumulating all the results at the end.
           </p>
           <p>
-          The following scene with the Stanford dragon model contains ~100,000 faces. I rendered 
-          the scene at 512x512 resolution and with 8 samples per pixel.
-          I did my performance benchmarking on a 64 core Google Cloud Intel Skylake compute-optimized machine.
+          The following scene with the Stanford dragon model contains ~100,000 faces.
+          In each test I rendered the scene at 512x512 resolution and with 8 samples per pixel.
+          </p>
+          <p>
+          I did the performance benchmarking on a 64 core Google Cloud Intel Skylake compute-optimized machine.
           </p>
           <p>
           Without a mesh k-d tree and on a single thread it would take ~420 minutes to render the image.
