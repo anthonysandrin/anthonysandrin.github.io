@@ -126,15 +126,15 @@
     <section class="gallery">
       <div class="gallery-image">
         <img class="zooming-image" src="img/three_spheres_sky_box.png"></img>
-        <p>No direct light, uniform sky lighting only</p>
+        <p>No direct light, uniform sky lighting only.</p>
       </div>
       <div class="gallery-image">
         <img class="zooming-image" src="img/three_spheres_point.png"></img>
-        <p>Point light and uniform sky lighting</p>
+        <p>Point light and uniform sky lighting.</p>
       </div>
       <div class="gallery-image">
         <img class="zooming-image" src="img/three_spheres.png"></img>
-        <p>Spherical light and uniform sky lighting</p>
+        <p>Spherical light and uniform sky lighting.</p>
       </div>
     </section>
 
@@ -217,10 +217,10 @@
         <div class="feature-details">
           <p>I implemented 3D and 4D Perlin noise using Perlin's improved interpolation technique.</p>
           <p>
-          The next animation is created by measuring the derivative of the perlin noise at the surface of
+          The next animation is created by measuring the derivative of the Perlin noise at the surface of
           the sphere with respect to the \(u\) and \(v\) tangent vectors. These values are used to perturb
-          the surface normal. I then create an animatuion using time as the fourth dimension of
-          the perlin noise input.
+          the surface normal. I then create an animation using time as the fourth dimension of
+          the Perlin noise input.
           </p>
         </div>
       </div>
@@ -269,11 +269,11 @@
       </div>
       <div class="feature-image">
         <img class="zooming-image" src="img/antialias_bad.png"></img>
-        <p>Not antialiased</p>
+        <p>Not antialiased.</p>
       </div>
       <div class="feature-image">
         <img class="zooming-image" src="img/antialias.png"></img>
-        <p>Antialiased</p>
+        <p>Antialiased.</p>
       </div>
     </section>
 
@@ -285,23 +285,25 @@
         <div class="hrule"></div>
         <div class="feature-details">
           <p>
-          For acceleration, I use an axis-aligned bounding box for each primitive and a k-d tree for
-          storing the faces of each mesh. I also implemented multithreading by having each thread
-          write to a thread-local buffer and accumulating the results at the end.
+          For acceleration, I implemented axis-aligned bounding box for each primitive and a
+          k-d tree for storing the faces of each mesh.
+          I also implemented multithreading by having each thread
+          write to a thread-local buffers, accumulating all the results at the end.
           </p>
           <p>
-          The following scene with the stanford dragon model contains ~100,000 faces. I rendered 
-          my scene at 512x512 resolution and 8 samples per pixel.
-          I did my performance benchmarking on a 64 core Google Cloud intel skylake compute-optimized machine.
+          The following scene with the Stanford dragon model contains ~100,000 faces. I rendered 
+          the scene at 512x512 resolution and with 8 samples per pixel.
+          I did my performance benchmarking on a 64 core Google Cloud Intel Skylake compute-optimized machine.
           </p>
           <p>
-          Without a k-d tree and on a single thread it would take ~420 minutes to render the image.
-          With a k-d tree on a single thread it takes only 288 seconds -- An 87x improvement!.
+          Without a mesh k-d tree and on a single thread it would take ~420 minutes to render the image.
+          With a mesh k-d tree on a single thread it takes only 288 seconds -- An 87x improvement!.
           </p>
           <p>
-          The following charts show the multicore scaling with a k-d tree enabled.
+          The following charts show the multicore scaling with mesh k-d tree enabled.
           Up to 32 cores, the scaling is nearly perfect but drops off to 75% scaling at 64 cores.
-          Using 64 cores and a k-d tree the scene can be rendered in just 5.95 seconds -- A 4000x improvement!
+          Using 64 cores and a k-d tree the scene can be rendered in just 5.95 seconds
+          -- A 4000x improvement over no acceleration!
           </p>
 <iframe width="710" height="445" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQdzS0hpzMBCbBJesps8kFxsLqzNfxUrb0VGljQaMg8PCtN6jTEenRys4ycgiuhcYRiR3jX3q1bFj8y/pubchart?oid=594922133&amp;format=interactive"></iframe>
 <iframe width="710" height="445" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQdzS0hpzMBCbBJesps8kFxsLqzNfxUrb0VGljQaMg8PCtN6jTEenRys4ycgiuhcYRiR3jX3q1bFj8y/pubchart?oid=584169773&amp;format=interactive"></iframe>
@@ -323,7 +325,7 @@
           I added glossy reflections to my material model by adding a reflectiveness
           parameter and a glossiness parameter.
           The reflectiveness parameter performs a linear interpolation between
-          a lambertian surface model and a perfect reflection model.
+          a Lambertian surface model and a perfect reflection model.
           The glossiness parameter that controls a random perturbation of the
           reflected ray and how sharp the BRDF is at the reflected angle.
           </p>
@@ -338,7 +340,7 @@
       <div class="feature-image">
         <img class="zooming-image" src="img/glossy.png"></img>
         <p>
-        Textured materials with glossy reflections
+        Textured materials with glossy reflections.
         </p>
       </div>
     </section>
@@ -356,8 +358,8 @@
           <p>
           Each path is identified with the vector of random numbers
           used to generate it. By applying random mutations to this
-          vector of numbers, a markov chain of paths can be created.
-          This markov chain is then used as part of the Metropolis sampling
+          vector of numbers, a Markov chain of paths can be created.
+          This Markov chain is then used as part of the Metropolis sampling
           algorithm to sample paths with probability density approximately
           equal to the luminance of the path.
           </p>
@@ -381,15 +383,15 @@
     <section class="gallery">
       <div class="gallery-image">
         <img class="zooming-image" src="img/caustics_bdpt.png"></img>
-        <p>Standard BDPT, 32 Samples</p>
+        <p>Standard BDPT, 32 Samples.</p>
       </div>
       <div class="gallery-image">
         <img class="zooming-image" src="img/caustics_mlt.png"></img>
-        <p>Metropolis Light Transport, 32 Samples</p>
+        <p>Metropolis Light Transport, 32 Samples.</p>
       </div>
       <div class="gallery-image">
         <img class="zooming-image" src="img/caustics_weight.png"></img>
-        <p>Metropolis Light Transport samples per pixel</p>
+        <p>Metropolis Light Transport samples per pixel.</p>
       </div>
     </section>
 
@@ -440,7 +442,7 @@
       <div class="gallery-image">
         <img class="zooming-image" src="img/perlin_medium.png"></img>
         <p>
-        Medium contained within a sphere using ray marching over perlin noise.
+        Medium contained within a sphere using ray marching over Perlin noise.
         <p>
       </div>
       <div class="gallery-image">
@@ -477,7 +479,7 @@
       </div>
       <div class="feature-image">
         <img class="zooming-image" src="img/concept.png"></img>
-        <p>Final scene concept sketch</p>
+        <p>Final scene concept sketch.</p>
       </div>
     </section>
     <section class="gallery">
