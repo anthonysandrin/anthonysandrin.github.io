@@ -6,6 +6,9 @@
     <link rel='stylesheet' href='css/drift-basic.css'>
     <link href='http://fonts.googleapis.com/css?family=Lato|Noto+Serif' rel='stylesheet' type='text/css'>
     <script src="js/Drift.min.js"></script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
     <script async="" src="//www.google-analytics.com/analytics.js"></script>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -19,18 +22,29 @@
 <body>
   <main>
     <header>
+      <a style="color:#000000; text-decoration:none" href="/">Anthony Sandrin</a>
       <h1>Atlas</h1>
       <h2>My final project for CS488</h2>
-      <p>
-      </p>
     </header>
+
+    <div class="hrule"></div>
+
+    <section class="feature">
+      <div class="feature-body">
+        <div class="feature-details">
+          <p>
+          Atlas is a path tracer I implemented as my final project for the CS488: Computer Graphics course
+          at the University of Waterloo. Named after the focus of my final scene, this renderer implements
+          birdiectional path tracing with volumetric scattering along with a number of other features described below.
+          </p>
+        </div>
+      </div>
+    </section>
 
     <section class="gallery">
       <div class="gallery-image">
         <img class="zooming-image" src="img/statue.png"></img>
-        <p>
-        Final Scene.
-        <p>
+        <p>Final Scene.</p>
       </div>
     </section>
 
@@ -54,20 +68,27 @@
           </p>
           <p>
           After both paths are generated, each camera vertex is connected to each light
-          vertex to create many camera-light paths. The throughput of each path is 
-          then calculated by casting a shadow ray to test for occlusion and calculating the
-          BRDF at each intersection point, which is determined by the object's material.
-          The sum of the throughput of all paths is then recorded as the value of the sample.
+          vertex to create many camera-light paths.
+          The light throughput of each path \(P\) is calculated using the following equation:
+          </p>
+          <p class="math">
+          \(P(s_1\rightarrow s_2\rightarrow \cdots\rightarrow  s_n \leftrightarrow t_m \leftarrow  \cdots \leftarrow  t_2 \leftarrow t_1) \\
+          = C(s_n) BRDF(s_{n-1} \rightarrow s_n \rightarrow t_m) G(s_n\leftrightarrow t_m) BRDF(s_n \rightarrow t_m \rightarrow t_{m-1}) C(t_m) L_e(t_1) \)
           </p>
           <p>
-          In the following image, notice the 
-          colour of the red floor bleeding onto the spheres as light bounces off the
-          floor then the sphere then into the camera.
+          Where \(s_1\rightarrow\cdots \rightarrow s_n\) is the camera path, \(t_1\rightarrow \cdots t_m\) is the light path,
+          \(G(s_n\leftrightarrow t_m)\) is an occlusion factor, determined
+          by casting a shadow ray, \(L_e(t_1)\) is the direct illumination at \(t_1\),
+          and \(C(v)\) is the contribution of the vertex and is calculated as the path is being constructed.
+          </p>
+          <p>
+          \(C(s_n) = \prod_{i=2}^{n-1} BRDF(s_{i-1}\rightarrow s_{i} \rightarrow s_{i+1}) \)
           </p>
         </div>
       </div>
       <div class="feature-image">
         <img class="zooming-image" src="img/three_spheres_point.png"></img>
+        <p>Notice the red floor colour bleeding onto the white spheres.</p>
       </div>
     </section>
 
@@ -88,15 +109,12 @@
           </p>
           <p>
           This works well for scenes with only diffuse objects where the light itself
-          is not visible; however, extra work is done in order for camera rays to be able
+          is not visible; however, extra effort is done in order for camera rays to be able
           to intersect with the light directly, or for purely specular camera-light paths to be
-          possible. To handle these cases, each spherical light source creates a sphere
-          primitive with a special emissive material. When a camera path intersects with
-          these emissive spheres, this amount of light emitted is added to the output.
-          </p>
-          <p>
-          In the following image, notice how the shadow at the point of the cube starts sharp
-          but softens out as it gets farther away.
+          possible. To handle these cases, each spherical light source adds a sphere
+          primitive to the scene with a special emissive material.
+          When a camera path intersects with these emissive spheres,
+          this emitted light is added to the output.
           </p>
         </div>
       </div>
@@ -139,11 +157,11 @@
       </div>
       <div class="feature-image">
         <img class="zooming-image" src="img/glass.png"></img>
-        <p>Glass spheres</p>
+        <p>Glass spheres.</p>
       </div>
       <div class="feature-image">
         <img class="zooming-image" src="img/caustics_bunny_bdpt.png" style="width:1024px; height:auto"></img>
-        <p>Stanford Bunny Caustics</p>
+        <p>Stanford Bunny caustics.</p>
       </div>
     </section>
 
@@ -155,17 +173,15 @@
         <div class="hrule"></div>
         <div class="feature-details">
           <p>
-          I implemented texture mapping by storing the uv coordinates of each intersection 
-          point and sampling textures once using linear interpolation. 
-          </p>
-          <p>
-          In the next image, notice the texture applied to the T. rex and the procedural
-          checkerboard texture applied to the floor.
+          I implemented texture mapping by storing the \(u\) and \(v\) coordinates of each intersection 
+          point and sampling textures once using linear interpolation. Antialiasing is achieved by simply
+          taking more samples per pixel.
           </p>
         </div>
       </div>
       <div class="feature-image">
         <img class="zooming-image" src="img/trex3.png"></img>
+        <p>Textured T. rex and procedural checkerboard texture.</p>
       </div>
     </section>
 
@@ -177,9 +193,9 @@
         <div class="hrule"></div>
         <div class="feature-details">
           <p>
-          Bump mapping is implemented by storing the normal and uv tangent vectors
-          at each intersection point and perturbing the normal according to a texture
-          sample.
+          Bump mapping is implemented by storing the normal and \(u\) and \(v\) tangent vectors
+          at each intersection point and perturbing the normal according to a sample from 
+          a normal map.
           </p>
           <p>
           In the following animation, notice how the shading on the surface of the sphere changes
@@ -202,7 +218,7 @@
           <p>I implemented 3D and 4D Perlin noise using Perlin's improved interpolation technique.</p>
           <p>
           The next animation is created by measuring the derivative of the perlin noise at the surface of
-          the sphere with respect to the u and v tangent vectors. These values are used to perturb
+          the sphere with respect to the \(u\) and \(v\) tangent vectors. These values are used to perturb
           the surface normal. I then create an animatuion using time as the fourth dimension of
           the perlin noise input.
           </p>
@@ -225,9 +241,6 @@
           Each sample starts at a random point on the camera's aperture and is given a direction such that
           all rays for a specific pixel intersect at the same point on the focal plane.
           </p>
-          <p>
-          In the next image, notice that the red sphere is in focus and sharp while the remaining spheres are out of focus and blurry.
-          </p>
         </div>
       </div>
       <div class="feature-image">
@@ -248,7 +261,7 @@
           </p>
           <p>
           The first image is created by taking samples at the exact center of each pixel while the second
-          is created by taking samples randomly distributed within each pixel. In the first image, notice the
+          is created by taking 8 samples randomly distributed within each pixel. In the first image, notice the
           jagged edges on the shadows and along the checkerboard lines. Those same lines are smooth in the
           second image.
           </p>
@@ -272,15 +285,26 @@
         <div class="hrule"></div>
         <div class="feature-details">
           <p>
-          For acceleration, I use an axis-aligned bounding box for each primitive and a kd-tree for
-          storing the faces of each mesh.
+          For acceleration, I use an axis-aligned bounding box for each primitive and a k-d tree for
+          storing the faces of each mesh. I also implemented multithreading by having each thread
+          write to a thread-local buffer and accumulating the results at the end.
           </p>
           <p>
-          The followingscene including the stanford dragon model contains ~100,000 faces and without
-          a kd-tree it would take ~68 minutes to render a 512x512 image with 4 samples per pixel.
-          With a kd-tree it takes only 40.65 seconds to render the images. Using 8-core
-          multithreading brings the render time down to only 8.43 seconds.
+          The following scene with the stanford dragon model contains ~100,000 faces. I rendered 
+          my scene at 512x512 resolution and 8 samples per pixel.
+          I did my performance benchmarking on a 64 core Google Cloud intel skylake compute-optimized machine.
           </p>
+          <p>
+          Without a k-d tree and on a single thread it would take ~420 minutes to render the image.
+          With a k-d tree on a single thread it takes only 288 seconds -- An 87x improvement!.
+          </p>
+          <p>
+          The following charts show the multicore scaling with a k-d tree enabled.
+          Up to 32 cores, the scaling is nearly perfect but drops off to 75% scaling at 64 cores.
+          Using 64 cores and a k-d tree the scene can be rendered in just 5.95 seconds -- A 4000x improvement!
+          </p>
+<iframe width="710" height="445" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQdzS0hpzMBCbBJesps8kFxsLqzNfxUrb0VGljQaMg8PCtN6jTEenRys4ycgiuhcYRiR3jX3q1bFj8y/pubchart?oid=594922133&amp;format=interactive"></iframe>
+<iframe width="710" height="445" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQdzS0hpzMBCbBJesps8kFxsLqzNfxUrb0VGljQaMg8PCtN6jTEenRys4ycgiuhcYRiR3jX3q1bFj8y/pubchart?oid=584169773&amp;format=interactive"></iframe>
         </div>
       </div>
       <div class="feature-image">
@@ -296,10 +320,12 @@
         <div class="hrule"></div>
         <div class="feature-details">
           <p>
-          I added glossy reflections to my material model by first adding a reflectiveness
-          parameter which interpolates between a lambertian surface model and a perfect reflection
-          model. I then added a glossiness parameter that controls a random perturbation of the
-          reflected ray and modified the surface BRDF to account for this perturbation.
+          I added glossy reflections to my material model by adding a reflectiveness
+          parameter and a glossiness parameter.
+          The reflectiveness parameter performs a linear interpolation between
+          a lambertian surface model and a perfect reflection model.
+          The glossiness parameter that controls a random perturbation of the
+          reflected ray and how sharp the BRDF is at the reflected angle.
           </p>
         </div>
       </div>
@@ -343,10 +369,10 @@
           </p>
           <p>
           This implementation still needs some tweaking to be usable and
-          in general produces noisier results than standard bidirectoinal path tracing.
+          in general produces noisier results than standard bidirectional path tracing.
           To improve the results I would need to reduce startup bias by adopting
-          a better approach for generating bootstrap samples. I would
-          also need to develop a more robust mutatoin strategy.
+          a better approach for generating bootstrap samples. I could also
+          implement a more sophisticated mutation strategy.
           </p>
         </div>
       </div>
@@ -367,7 +393,6 @@
       </div>
     </section>
 
-
     <section class="feature">
       <div class="feature-body">
         <div class="feature-header">
@@ -379,18 +404,27 @@
           I implemented volumetric scattering by assigning each object in the
           scene an internal medium and also designating a global scene medium.
           </p>
-          As paths are being constructed, I keep track of the current medium that the
-          path is travelling through. Before adding a vertex to the path, I first
+          As paths are being constructed, I keep track of the medium that the current
+          ray is travelling through. Before adding a vertex to the path, I first
           consider the possibility that the light will scatter before reaching the
           intersection point. In this case a special scattering
           vertex is added to the path instead of the usual intersection vertex.
           </p>
           <p>
-          When calculating the throughput of each path,
-          the value is decreased by a transmission factor
-          calculated for each segment of the path.
-          Also, at scatter vertices, where I would normally multiply by
-          the surface's BRDF, I instead multiply by the medium's phase function.
+          To calculating the throughput of each path, the equation described
+          above is modified to be:
+          </p>
+          <p class="math">
+          \(P(s_1\rightarrow s_2\rightarrow \cdots\rightarrow  s_n \leftrightarrow t_m \leftarrow  \cdots \leftarrow  t_2 \leftarrow t_1) \\
+          = C(s_n) f(s_{n-1} \rightarrow s_n \rightarrow t_m) T(s_n\leftarrow t_m) f(s_n \rightarrow t_m \rightarrow t_{m-1}) C(t_m) L_e(t_1) \)
+          </p>
+          <p>
+          Where the occlusion factor \(G(s_n\leftrightarrow t_m)\) has been replaced by a transmission factor
+          \(T(s_n\leftarrow t_m)\), \(f(\cdots)\) is either the BRDF of the material or the phase function of the scattering medium
+          and \(C(v)\) has been modified such that
+          </p>
+          <p>
+          \(C(s_n) = (\prod_{i=2}^{n-1} f(s_{i-1}\rightarrow s_{i} \rightarrow s_{i+1})T(s_{i-1}\rightarrow s_{i})) T(s_{n-1}\rightarrow s_n) \)
           </p>
         </div>
       </div>
@@ -430,13 +464,14 @@
           interpretation of that myth.
           </p>
           <p>
-          I used a ray-marching scattering medium to create the clouds in the "sky"
-          and a global homogeneous scattering medium to create the god-ray effect throughout the
-          rest of the image.
+          To render the "sky", I used a distorted version of the ray-marching medium
+          using NASA's "Blue Marble" imagery.
+          The god-ray effect is caused by the rings of the statue casting shadows
+          through a homogeneous global medium.
           </p>
           <p>
-          The final scene is rendered at 1920x1080 resolution with 2048 samples per pixel.
-          It took ~11 hours to render on a 64-core Google Cloud Compute machine.
+          The final scene is rendered at 1920x1080 with 2048 samples per pixel.
+          It took ~11 hours to render on a 64 core Google cloud compute machine.
           </p>
         </div>
       </div>
@@ -471,7 +506,14 @@
           in the final scene.
           </p>
           <p>
+          Credit to the <a href="http://graphics.stanford.edu/data/3Dscanrep/">Stanford 3D Scanning Repository</a> for the Stanford Bunny and
+          Stanford Dragon models.
+          </p>
+          <p>
           Credit to <a href="https://3dtextures.me">3dtextures.me</a> for the remaining textures used.
+          </p>
+          <p>
+          Credit to NASA for the <a href="https://visibleearth.nasa.gov/view.php?id=57723">Blue Marble</a> imagery.
           </p>
           <p>
           Credit to <a href="https://www.graphics.cornell.edu/~bjw/rgbe.html">Greg Ward</a> for his implementation of the RGBE file format.
@@ -493,4 +535,3 @@
   <script src="js/cs488.js"></script>
 </body>
 </html>
-

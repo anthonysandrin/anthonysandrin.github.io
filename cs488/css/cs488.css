@@ -1,36 +1,40 @@
 body {
   padding: 0;
   margin: 0;
-  font-family: Nato;
-  font-size: 18pt;
+  font-family: Lato;
+  font-size: 16pt;
   background: #EEEEEE;
 }
 
+.MathJax {
+  font-size: 14pt;
+}
+
 header {
-  margin: 1em;
   padding: 1em;
 }
 
 header h1 {
   font-family: Lato;
-  font-size: 4em;
+  font-size: 3em;
   text-align: center;
 }
 
 header h2 {
   font-family: Lato;
-  font-size: 2em;
+  font-size: 1.5em;
   font-weight: 300;
   text-align: center;
 }
 
 header p {
-  padding: 2em;
+  font-family: Lato;
+  font-size: 1.5em;
 }
 
 .hrule {
   width: 60%;
-  background: #888888;
+  background: #000000;
   height:2px;
   margin-left: 20%;
 }
@@ -39,12 +43,11 @@ header p {
   display: flex;
   flex-wrap: wrap;
   padding: 1em;
-  margin: 1em;
 }
 
 .feature-body {
   flex: 2;
-  margin: 1em;
+  margin: 0em 1em;
   display: flex;
   flex-direction: column;
 }
@@ -62,8 +65,8 @@ header p {
 .feature-details {
   align-self: center;
   min-width: 20em;
-  max-width: 40em;
-  padding: 1em 4em;
+  max-width: 50em;
+  padding: 0em 4em;
   flex: 1;
 }
 
@@ -73,7 +76,6 @@ header p {
   flex: 1;
   padding: 1em;
   border-radius: 10px;
-  padding-top: 10em;
 }
 
 .feature-image img {
@@ -86,8 +88,7 @@ header p {
 
 .feature-image p {
   font-family: Lato;
-  margin: 1em;
-  padding: 1em;
+  min-height: 3em;
 }
 
 .gallery {
@@ -95,7 +96,6 @@ header p {
   align-items: center;
   flex-wrap: wrap;
   padding: 1em;
-  margin: 1em;
 }
 
 .gallery-image {
@@ -117,4 +117,9 @@ header p {
   font-family: Lato;
   margin: 1em;
   padding: 1em;
+  min-height: 4em;
+}
+
+.math {
+  text-align: center;
 }
