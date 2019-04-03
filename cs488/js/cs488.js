@@ -1,11 +1,10 @@
-images = document.getElementsByClassName('zooming-image')
+images = document.getElementsByClassName('zooming-image');
 
 for (var i = 0; i < images.length; i++) {
-  d = new Drift(images.item(i) ,{
-    inlinePane: true,
-    containInline: true,
-    zoomFactor: 3,
-    sourceAttribute: 'src'
+  d = new Drift(images.item(i), {
+    inlinePane : true,
+    containInline : true,
+    zoomFactor : 3,
+    sourceAttribute : 'src'
   });
 }
-

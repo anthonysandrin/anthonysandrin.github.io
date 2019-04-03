@@ -71,18 +71,27 @@
           vertex to create many camera-light paths.
           The light throughput of each path \(P\) is calculated using the following equation:
           </p>
-          <p class="math">
-          \(P(s_1\rightarrow s_2\rightarrow \cdots\rightarrow  s_n \leftrightarrow t_m \leftarrow  \cdots \leftarrow  t_2 \leftarrow t_1) \\
-          = C(s_n) BRDF(s_{n-1} \rightarrow s_n \rightarrow t_m) G(s_n\leftrightarrow t_m) BRDF(s_n \rightarrow t_m \rightarrow t_{m-1}) C(t_m) L_e(t_1) \)
+          <p>
+          \[P\left(\bar{s},\bar{t}\right) =
+          C(s_n)
+          f_{s_n}\left(s_{n-1},s_n,t_m\right)
+          G\left(s_n,t_m\right)
+          f_{t_m}\left(s_n,t_m,t_{m-1}\right)
+          C(t_m)
+          L(t_0)
+          \]
           </p>
           <p>
-          Where \(s_1\rightarrow\cdots \rightarrow s_n\) is the camera path, \(t_1\rightarrow \cdots t_m\) is the light path,
-          \(G(s_n\leftrightarrow t_m)\) is an occlusion factor, determined
-          by casting a shadow ray, \(L_e(t_1)\) is the direct illumination at \(t_1\),
-          and \(C(v)\) is the contribution of the vertex and is calculated as the path is being constructed.
+          Where
+          \(\bar{s} = s_0\rightarrow s_1\rightarrow\cdots\rightarrow s_n\) is the camera path, 
+          \(\bar{t} = t_0\rightarrow t_1\rightarrow\cdots\rightarrow t_m\) is the light path,
+          \(f_{s_n}\) and \(f_{t_m}\) are the surface BRDFs, \(L(t_0)\) is the direct light
+          at the first light vertex, \(G(t_m,s)\) is an occlusion factor calculated by 
+          casting a shadow ray, and \(C(v)\) is the contributoin of the vertex 
+          \(v\) and is calculated as the path is being constructed:
           </p>
           <p>
-          \(C(s_n) = \prod_{i=2}^{n-1} BRDF(s_{i-1}\rightarrow s_{i} \rightarrow s_{i+1}) \)
+          \[C(s_k) = \prod_{i=1}^{k-1} f_{s_{i}}(s_{i-1}\rightarrow s_{i} \rightarrow s_{i+1}) \]
           </p>
         </div>
       </div>
@@ -324,9 +333,13 @@
         <div class="hrule"></div>
         <div class="feature-details">
           <p>
-          I implemented opacity maps. When testing for occlusion,
-          whenever a ray intersects with a surface, if that surface is transparent at the
-          intersection point, the intersection is ignored.
+          When constructing a path, if a ray intersects with a transparent part
+          of a surface, the surface BRDF is ignored.
+          <p>
+          </p>
+          When a ray intersects with a transparent part of a surface during an
+          occlusion test, that surface is ignored and a second ray 
+          is shot.
           </p>
         </div>
       </div>
@@ -435,19 +448,50 @@
           </p>
           <p>
           To calculating the throughput of each path, the equation described
-          above is modified to be:
-          </p>
-          <p class="math">
-          \(P(s_1\rightarrow s_2\rightarrow \cdots\rightarrow  s_n \leftrightarrow t_m \leftarrow  \cdots \leftarrow  t_2 \leftarrow t_1) \\
-          = C(s_n) f(s_{n-1} \rightarrow s_n \rightarrow t_m) T(s_n\leftarrow t_m) f(s_n \rightarrow t_m \rightarrow t_{m-1}) C(t_m) L_e(t_1) \)
+          above is modified to:
           </p>
           <p>
-          Where the occlusion factor \(G(s_n\leftrightarrow t_m)\) has been replaced by a transmittance factor
-          \(T(s_n\leftarrow t_m)\), \(f(\cdots)\) is either the BRDF of the material or the phase function of the scattering medium
-          and \(C(v)\) has been modified such that
+          \[P\left(\bar{s},\bar{t}\right) =
+          C(s_n)
+          f_{s_n}\left(s_{n-1},s_n,t_m\right)
+          T\left(s_n,t_m\right)
+          f_{t_m}\left(s_n,t_m,t_{m-1}\right)
+          C(t_m)
+          L(t_0)
+          \]
           </p>
           <p>
-          \(C(s_n) = (\prod_{i=2}^{n-1} f(s_{i-1}\rightarrow s_{i} \rightarrow s_{i+1})T(s_{i-1}\rightarrow s_{i})) T(s_{n-1}\rightarrow s_n) \)
+          Where the occlusion factor \(G(s_n, t_m)\) has been replaced by a transmittance factor
+          \(T(s_n, t_m)\), \(f_{s_n}\) and \(f_{t_m}\) are either surface BRDFs or scattering phase functions,
+          and \(C(v)\) has been modified to
+          </p>
+          <p>
+          \[C(s_k) = T(s_0,s_1)\prod_{i=1}^{k-1} (f_{s_{i}}(s_{i-1}\rightarrow s_{i} \rightarrow s_{i+1})T(s_{i-1},s_{i}))T(s_{k-1},s_k) \]
+          </p>
+          <p>
+          Light scattering in a homogeneous medium ray is a Poisson process so
+          the scattering distance follows an exponential distribution. 
+          Given a value \(x\) generated from a uniform random distribution
+          the exact scattering distance is calculated using the inverse CDF:
+          </p>
+          <p>
+          \[\frac{-\text{log}(1-x)}{\sigma}\]
+          </p>
+          <p>
+          Where \(\sigma\) is the number of scattering events per unit distance.
+          <p>
+          </p>
+          To calculate the transmittance between two points in a homogeneous medium, the CDF of
+          the complement of the scattering event is used:
+          </p>
+          <p>
+          \[
+          T(s_n,t_m) = e^{-\sigma \|s_n - t_m\|}
+          \]
+          </p>
+          <p>
+          For non-homogeneous mediums, I used ray marching, where the inverse CDF
+          is approximated by integrating the PDF by sampling at fixed intervals.
           </p>
         </div>
       </div>
@@ -543,9 +587,6 @@
           </p>
           <p>
           I used the <a href="https://github.com/ThePhD/sol2">sol</a> library for extending the lua interface.
-          </p>
-          <p>
-          I referenced the book <a href="https://www.pbrt.org">Physically Based Rendering</a> for most of the theory involved.
           </p>
         </div>
       </div>

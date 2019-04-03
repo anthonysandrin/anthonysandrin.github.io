@@ -66,7 +66,7 @@ header p {
   align-self: center;
   min-width: 20em;
   max-width: 50em;
-  padding: 0em 4em;
+  padding: 0em 1em;
   flex: 1;
 }
 
@@ -81,7 +81,7 @@ header p {
 .feature-image img {
   max-height: 100%;
   max-width: 100%;
-  min-width: 256px;
+  min-width: 400px;
   border-radius: 10px;
   box-shadow: 3px 3px 10px 5px #00000088;
 }
@@ -108,7 +108,7 @@ header p {
 .gallery-image img {
   max-height: 100%;
   max-width: 100%;
-  min-width: 256px;
+  min-width: 400px;
   border-radius: 10px;
   box-shadow: 3px 3px 10px 5px #00000088;
 }
